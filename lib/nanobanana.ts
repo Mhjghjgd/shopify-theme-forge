@@ -73,6 +73,7 @@ export async function generateWithNanobanana(
   };
 
   console.log(`[nanobanana] POST model=${model} generateImage=${generateImage}`);
+  console.log('[nanobanana] Calling URL:', url.replace(/key=.*/, 'key=REDACTED'));
 
   const res = await fetch(url, {
     method: 'POST',
