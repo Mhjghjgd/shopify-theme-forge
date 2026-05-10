@@ -85,7 +85,6 @@ export async function POST(req: NextRequest) {
     const aiResponse = await generateWithNanobanana(messages, {
       temperature: 0.7,
       maxOutputTokens: 4096,
-      generateImage: false,
     });
     console.log(`[analyze] Response length=${aiResponse.text.length}`);
 

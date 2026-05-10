@@ -7,9 +7,10 @@
  * - extractJson() : safe JSON extraction from AI text
  */
 
-const API_KEY   = () => process.env.NANOBANANA_API_KEY!;
-const API_URL   = () => (process.env.NANOBANANA_API_URL ?? 'https://generativelanguage.googleapis.com').replace(/\/$/, '');
-const API_MODEL = () => process.env.NANOBANANA_IMAGE_MODEL ?? 'gemini-2.0-flash-preview-image-generation';
+const API_KEY    = () => process.env.NANOBANANA_API_KEY!;
+const API_URL    = () => (process.env.NANOBANANA_API_URL ?? 'https://generativelanguage.googleapis.com').replace(/\/$/, '');
+const TEXT_MODEL = () => process.env.NANOBANANA_TEXT_MODEL ?? 'gemini-1.5-flash';
+const IMAGE_MODEL = () => process.env.NANOBANANA_IMAGE_MODEL ?? 'gemini-2.0-flash-preview-image-generation';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -42,11 +43,11 @@ export async function generateWithNanobanana(
   messages: NanoBananaMessage[],
   options: NanoBananaOptions = {}
 ): Promise<NanoBananaResponse> {
+  const generateImage = options.generateImage ?? false;
   const {
-    model        = API_MODEL(),
+    model        = generateImage ? IMAGE_MODEL() : TEXT_MODEL(),
     temperature  = 1,
     maxOutputTokens = 8192,
-    generateImage = false,
   } = options;
 
   const key = API_KEY();
@@ -54,16 +55,20 @@ export async function generateWithNanobanana(
 
   if (!key)   throw new Error('NANOBANANA_API_KEY is not set');
   if (!base)  throw new Error('NANOBANANA_API_URL is not set');
-  if (!model) throw new Error('NANOBANANA_IMAGE_MODEL is not set');
+  if (!model) throw new Error('Model is not set');
 
   const url = `${base}/v1beta/models/${model}:generateContent?key=${key}`;
+
+  console.log('[nanobanana] URL:', `${base}/v1beta/models/${model}:generateContent?key=REDACTED`);
+  console.log('[nanobanana] API_KEY exists:', !!key);
+  console.log('[nanobanana] MODEL:', model);
 
   const body = {
     contents: messages,
     generationConfig: {
       temperature,
       maxOutputTokens,
-      responseModalities: generateImage ? ['Text', 'Image'] : ['Text'],
+      ...(generateImage ? { responseModalities: ['Text', 'Image'] } : {}),
     },
   };
 
