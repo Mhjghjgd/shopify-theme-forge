@@ -144,7 +144,7 @@ export async function POST(req: NextRequest) {
     await db.job.update({
       where: { id: jobId },
       data: {
-        generatedImages: { images: generated, imageMap, failed },
+        generatedImages: { images: generated, imageMap, failed } as unknown as import('@prisma/client').Prisma.InputJsonValue,
         progress: 70,
         currentStep: 'Building theme files...',
       },
