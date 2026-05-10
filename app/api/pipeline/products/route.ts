@@ -75,7 +75,7 @@ Génère exactement 4 produits cohérents avec cette niche. Format JSON strict :
     await db.job.update({
       where: { id: jobId },
       data: {
-        products: parsed.data.products,
+        products: parsed.data.products as unknown as import('@prisma/client').Prisma.InputJsonValue,
         progress: 35,
         currentStep: 'Products ready — generating images...',
       },

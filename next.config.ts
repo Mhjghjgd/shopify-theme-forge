@@ -17,7 +17,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverExternalPackages: ['sharp', 'archiver', 'fs-extra'],
+  serverExternalPackages: ['sharp', 'archiver', 'fs-extra', '@prisma/client'],
+  webpack: (config) => {
+    config.resolve.symlinks = false;
+    return config;
+  },
 };
 
 export default nextConfig;
