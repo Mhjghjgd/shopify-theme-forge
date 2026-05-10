@@ -3,7 +3,11 @@
     "allow": [
       "Bash(git add *)",
       "Bash(git commit -m 'fix: force redeploy + log exact URL *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(vercel ls *)",
+      "Bash(git commit -m 'fix: correct Gemini model name *)",
+      "Bash(vercel env *)",
+      "Bash(git commit -m 'fix: gemini-2.0-flash model *)"
     ]
   }
 }
