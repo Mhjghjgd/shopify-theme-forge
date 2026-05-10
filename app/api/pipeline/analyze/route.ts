@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
     await db.job.update({
       where: { id: jobId },
       data: {
-        designBrief,
+        designBrief: designBrief as unknown as import('@prisma/client').Prisma.InputJsonValue,
         progress: 25,
         currentStep: 'Generating product catalog...',
       },
