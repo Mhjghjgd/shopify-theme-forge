@@ -979,7 +979,7 @@ async function copyImagesToAssets(themePath: string, images: GeneratedImage[]) {
   // Write URL references file — actual images are referenced by URL in settings_data
   const imageManifest = images.reduce(
     (acc, img) => {
-      acc[img.filename] = img.url;
+      acc[img.filename ?? img.id] = img.url;
       return acc;
     },
     {} as Record<string, string>
@@ -1000,7 +1000,7 @@ async function buildProductsCsv(
 
   for (const product of products) {
     const mainImage = images.find(
-      (i) => i.productId === product.id && i.type === 'product-main'
+      (i) => i.productId === product.id && (i.type === 'product-main' || i.type === 'product_main')
     );
     const handle = product.name
       .toLowerCase()

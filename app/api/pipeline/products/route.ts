@@ -87,6 +87,8 @@ Génère exactement 4 produits cohérents avec cette niche. Format JSON strict :
     return NextResponse.json({ ok: true, step: 'products', count: parsed.data.products.length });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
+    console.error(`[products] FATAL job=${jobId}:`, error);
+    console.error(`[products] Stack:`, (error as Error)?.stack);
     await db.job.update({
       where: { id: jobId },
       data: { status: 'FAILED', error: `[products] ${message}` },

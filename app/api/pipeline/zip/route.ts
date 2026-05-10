@@ -55,6 +55,8 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
+    console.error(`[zip] FATAL job=${jobId}:`, error);
+    console.error(`[zip] Stack:`, (error as Error)?.stack);
     await db.job.update({
       where: { id: jobId },
       data: { status: 'FAILED', error: `[zip] ${message}` },

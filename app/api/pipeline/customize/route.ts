@@ -35,7 +35,8 @@ export async function POST(req: NextRequest) {
   try {
     const brief = DesignBriefSchema.parse(job.designBrief);
     const { products } = ProductsResponseSchema.parse({ products: job.products });
-    const generatedImages = z.array(GeneratedImageSchema).parse(job.generatedImages);
+    const storedImages = job.generatedImages as { images?: unknown[] } | null;
+    const generatedImages = z.array(GeneratedImageSchema).parse(storedImages?.images ?? []);
 
     const themePath = await buildTheme({
       jobId,
@@ -81,6 +82,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, step: 'customize' });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
+    console.error(`[customize] FATAL job=${jobId}:`, error);
+    console.error(`[customize] Stack:`, (error as Error)?.stack);
     await db.job.update({
       where: { id: jobId },
       data: { status: 'FAILED', error: `[customize] ${message}` },

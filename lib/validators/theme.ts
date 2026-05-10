@@ -2,11 +2,12 @@ import { z } from 'zod';
 
 export const GeneratedImageSchema = z.object({
   id: z.string(),
+  type: z.string(),
   url: z.string().url(),
-  filename: z.string(),
-  type: z.enum(['hero', 'banner', 'about', 'product-main', 'product-lifestyle', 'product-detail']),
+  width: z.number(),
+  height: z.number(),
   productId: z.string().optional(),
-  size: z.number(),
+  filename: z.string().optional(),
 });
 
 export type GeneratedImage = z.infer<typeof GeneratedImageSchema>;

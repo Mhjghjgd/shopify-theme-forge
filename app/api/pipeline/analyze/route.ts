@@ -146,7 +146,8 @@ export async function POST(req: NextRequest) {
 
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error(`[analyze] FATAL job=${jobId}:`, message);
+    console.error(`[analyze] FATAL job=${jobId}:`, err);
+    console.error(`[analyze] Stack:`, (err as Error)?.stack);
     await db.job.update({
       where: { id: jobId },
       data: {

@@ -165,7 +165,8 @@ export async function POST(req: NextRequest) {
 
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error(`[images] FATAL job=${jobId}:`, message);
+    console.error(`[images] FATAL job=${jobId}:`, err);
+    console.error(`[images] Stack:`, (err as Error)?.stack);
     await db.job.update({
       where: { id: jobId },
       data: { status: 'FAILED', error: `Creating product images: ${message}` },
