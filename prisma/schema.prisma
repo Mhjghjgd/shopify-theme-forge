@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Job {
+  id          String    @id @default(cuid())
+  status      JobStatus @default(PENDING)
+  currentStep String?
+  progress    Int       @default(0)
+
+  // User inputs
+  prompt          String   @db.Text
+  storeName       String
+  niche           String
+  colorMood       String?
+  layoutStyle     String?
+  animationLevel  String?
+  referenceImages String[]
+
+  // Intermediate results
+  designBrief     Json?
+  products        Json?
+  generatedImages Json?
+
+  // Final output
+  zipUrl  String?
+  zipSize Int?
+
+  // Error
+  error String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
