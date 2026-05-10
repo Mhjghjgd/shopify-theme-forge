@@ -9,7 +9,7 @@
 
 const API_KEY    = () => process.env.NANOBANANA_API_KEY!;
 const API_URL    = () => (process.env.NANOBANANA_API_URL ?? 'https://generativelanguage.googleapis.com').replace(/\/$/, '');
-const TEXT_MODEL = () => process.env.NANOBANANA_TEXT_MODEL ?? 'gemini-1.5-flash';
+const TEXT_MODEL = () => process.env.NANOBANANA_TEXT_MODEL ?? 'gemini-2.0-flash';
 const IMAGE_MODEL = () => process.env.NANOBANANA_IMAGE_MODEL ?? 'gemini-2.0-flash-preview-image-generation';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
